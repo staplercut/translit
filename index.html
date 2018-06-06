@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Translit</title>
+    <script src="thrift.js" type="text/javascript"></script>
+    <script src="gen-js/translit_svc.js" type="text/javascript"></script>
+</head>
+<body>
+Text: <p><input type="text" id="str_in"></p>
+<input type="button" id="btn_to_eng" value="Translit to ENG" >
+<input type="button" id="btn_to_rus" value="Translit to RUS" >
+<p>Result:</p>
+<div id="output"></div>
+<script type="text/javascript">
+
+    document.getElementById("btn_to_eng").addEventListener("click",  getTranslit, false);
+
+    document.getElementById("btn_to_rus").addEventListener("click",  getTranslit, false);
+
+    function getTranslit() {
+//        alert('1');
+        var transport = new Thrift.TXHRTransport("http://localhost:9099/translit");
+        var protocol  = new Thrift.TJSONProtocol(transport);
+        var client    = new translit_svcClient(protocol);
+        var strElement = document.getElementById("str_in");
+//        var outputElement = document.getElementById("output");
+//        var result = client.get_str(strElement.value);
+        var lang = this.id;
+        console.log(lang);
+        document.getElementById("output").innerHTML = client.get_str(strElement.value, lang);
+
+
+
+
+
+    }
+
+</script>
+</body>
+</html>
